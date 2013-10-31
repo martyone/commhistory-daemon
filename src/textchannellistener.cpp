@@ -1589,6 +1589,10 @@ void TextChannelListener::saveMessage(CommHistory::Event &event)
 {
     DEBUG() << Q_FUNC_INFO << event.toString();
 
+    m_pendingGroups.append(event.groupId());
+    if (!event.messageToken().isEmpty())
+        m_commitingEvents.insert(event.messageToken());
+
     if (event.id() >= 0) {
         if (!eventModel().modifyEvent(event)) {
             qWarning() << "failed to modify event";
